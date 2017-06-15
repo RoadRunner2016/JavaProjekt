@@ -14,7 +14,7 @@ import java.time.LocalDate;
 /**
  * Created by Admin on 05.03.2017.
  */
-public class integrityTest
+public class IntegrityTest
 {
     InternalEmp Controller;
 
