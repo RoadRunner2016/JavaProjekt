@@ -36,6 +36,17 @@ public abstract class Employee
     public void setSalary(double _salary)
     {
         this.monthlySalary = _salary;
-    }
+    };
+
+    public void setFirstName(String _fName)
+    {
+        this.firstName = _fName;
+    };
+
+    public void setLastName(String _lastName)
+    {
+        this.lastName = _lastName;
+
+    };
 
 }

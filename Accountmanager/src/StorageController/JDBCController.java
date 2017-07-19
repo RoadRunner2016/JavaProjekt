@@ -1,115 +1,141 @@
 package StorageController;
 
-import Employee.Employee;
-import com.sun.java.util.jar.pack.DriverResource_zh_CN;
-import com.sun.org.apache.xml.internal.security.keys.storage.StorageResolverException;
+import Employee.InternalEmp;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 /**
- * Created by Ben on 15.06.2017.
+ * Created by Ben on 14.05.2017.
  */
 public class JDBCController
+
 {
-    // in the first part, i will write the declaration of the SQL strings
 
-    /** Hier werden die genauen Spaltenbezeichner als Konstanten festgelegt **/
 
-    private static final String TABLE_NAME_internalPersonal = "internalPersonal";
-    private static final String TABLE_internalPersonal_empID = "empID";
-    private static final String TABLE_internalPersonal_firstName = "firstName";
-    private static final String TABLE_internalPersonal_lastName = "lastName";
-    private static final String TABLE_internalPersonal_eMail = "eMail";
-    private static final String TABLE_internalPersonal_loginName = "loginName";
-    private static final String TABLE_internalPersonal_passWord = "passWord";
-    private static final String TABLE_internalPersonal_accessLevel = "accessLevel";
-    private static final String TABLE_internalPersonal_onStatus = "onStatus";
 
-    /** Hier alle Tabellen definieren **/
+    // PersonalIntern Table Constants
+    private static final String TABLE_NAME_PERSONALINTERN               = "accountdb.personalintern";
+    private static final String TABLE_PERSONALINTERN_COLUMN_EMPID       = "empID";
+    private static final String TABLE_PERSONALINTERN_COLUMN_FIRSTNAME   = "firstName";
+    private static final String TABLE_PERSONALINTERN_COLUMN_LASTNAME    = "lastName";
+    private static final String TABLE_PERSONALINTERN_COLUMN_EMAIL       = "eMail";
+    private static final String TABLE_PERSONALINTERN_COLUMN_LOGINNAME   = "loginName";
+    private static final String TABLE_PERSONALINTERN_COLUMN_PASSWORD    = "password";
+    private static final String TABLE_PERSONALINTERN_COLUMN_ACCESSLEVEL = "accessLevel";
+    private static final String TABLE_PERSONALINTERN_COLUMN_ONSTATUS    = "OnStatus";
 
-    private static final String CREATE_internalPersonal_TABLE = "create table " + TABLE_NAME_internalPersonal + " (" +
-            TABLE_internalPersonal_empID + " bigint primary key auto_increment," +
-            TABLE_internalPersonal_firstName + "varchar(55)," +
-            TABLE_internalPersonal_lastName + "varchar (55)," +
-            TABLE_internalPersonal_eMail + "varchar (100)," +
-            TABLE_internalPersonal_loginName + "varchar (115)," +
-            TABLE_internalPersonal_passWord + "varchar (20)," +
-            TABLE_internalPersonal_accessLevel + "int ," +
-            TABLE_internalPersonal_onStatus + "bool," + ")";
+    private static final String INSERT_PERSONALINTERN =
+            "INSERT INTO " + TABLE_NAME_PERSONALINTERN      + " (" +
+                    TABLE_PERSONALINTERN_COLUMN_FIRSTNAME   + ", " +
+                    TABLE_PERSONALINTERN_COLUMN_LASTNAME    + ", " +
+                    TABLE_PERSONALINTERN_COLUMN_EMAIL       + ", " +
+                    TABLE_PERSONALINTERN_COLUMN_LOGINNAME   + ", " +
+                    TABLE_PERSONALINTERN_COLUMN_PASSWORD    + ", " +
+                    TABLE_PERSONALINTERN_COLUMN_ACCESSLEVEL + ", " +
+                    TABLE_PERSONALINTERN_COLUMN_ONSTATUS    + " ) VALUES ( ?, ?, ?, ?, ?, ?, ? );";
 
-    /** Nun kommen die SQL-Strings für die SQL Befehle einfügen(insert) usw. **/
+    private static final String SELECT_ALL_FROM_PERSONALINTERN =
+            "SELECT * FROM accountdb.personalintern";
 
-    private static final String INSERT_person = "INSERT INTO" + TABLE_NAME_internalPersonal +
+    private static final String SELECT_LOGINNAME_FROM_PERSONALINTERN =
+            "SELECT * FROM accountdb.personalintern WHERE "+ TABLE_PERSONALINTERN_COLUMN_LOGINNAME + " = ?";
 
-            "(" +
-            TABLE_internalPersonal_empID + ", " +
-            TABLE_internalPersonal_lastName + ", " +
-            TABLE_internalPersonal_lastName + ", " +
-            TABLE_internalPersonal_passWord +
-            ") VALUES (?, ?, ?, ?)";
+    // Database connection
+    private PreparedStatement showPersonalInternStatement;
+    private PreparedStatement insertPersonalInternStatement;
+    private PreparedStatement loadPersonalInternStatement;
 
-    /** Platzhalter für UPDATE/DELETE/SHOW usw. **/
 
-    private static final String SELECT_ALL_FROM_PERSON = "select + from" + TABLE_NAME_internalPersonal;
-    private static final String SELECT_PERSON_BY_ID = "select + from  " + TABLE_NAME_internalPersonal + " where " + TABLE_internalPersonal_empID + " = ?";
+    public Connection connection;
 
-    /** Interface/Connection for the database "MySQL" **/
 
-    public Connection con = null;
 
-    private PreparedStatement showPersonal;
-    private PreparedStatement loadPersonByID;
+    public Connection JdbcStorageController()
+    {
+        try
+        {
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/accountdb", "root", "Blackjack");
+
+            this.insertPersonalInternStatement = this.connection.prepareStatement( INSERT_PERSONALINTERN, Statement.RETURN_GENERATED_KEYS );
+            this.showPersonalInternStatement = this.connection.prepareStatement(SELECT_ALL_FROM_PERSONALINTERN);
+            this.loadPersonalInternStatement = this.connection.prepareStatement(SELECT_LOGINNAME_FROM_PERSONALINTERN);
+        }
+        catch ( SQLException e )
+        {
+            e.printStackTrace();
+        }
+
+        return connection;
+    }
+
+    public int saveEmployee( InternalEmp _emp ) throws SQLException
+    {
+        this.insertPersonalInternStatement.setString( 1, _emp.getFirstName());
+        this.insertPersonalInternStatement.setString( 2, _emp.getLastName());
+        this.insertPersonalInternStatement.setString( 3, _emp.geteMail());
+        this.insertPersonalInternStatement.setString( 4, _emp.getLoginName());
+        this.insertPersonalInternStatement.setString( 5, _emp.getPassword());
+        this.insertPersonalInternStatement.setInt( 6, _emp.getAccessLevel());
+        this.insertPersonalInternStatement.setBoolean( 7, _emp.getOnStatus());
+
+        this.insertPersonalInternStatement.executeUpdate();
+
+        ResultSet generatedKeys = this.insertPersonalInternStatement.getGeneratedKeys();
+        generatedKeys.next();
+        int empId = generatedKeys.getInt( 1 );
+
+        _emp.setEmpID( empId );
+
+        LOGGER.info( "Saved employee [" + _emp + "] with id [" + empId + "]" );
+
+        return empId;
+    }
+
+    public InternalEmp loadEmployee( String _loginName ) throws SQLException {
+        InternalEmp employee = null;
+
+        this.loadPersonalInternStatement.setString( 1, _loginName);
+
+        ResultSet resultSet = this.loadPersonalInternStatement.executeQuery();
+
+        if ( resultSet.next() )
+        {
+            employee = new InternalEmp(
+                    resultSet.getString( TABLE_PERSONALINTERN_COLUMN_FIRSTNAME ),
+                    resultSet.getString( TABLE_PERSONALINTERN_COLUMN_LASTNAME ),
+                    resultSet.getString( TABLE_PERSONALINTERN_COLUMN_EMAIL ));
+
+            employee.setEmpID( resultSet.getInt( TABLE_PERSONALINTERN_COLUMN_EMPID ) );
+            employee.setPassword( resultSet.getString( TABLE_PERSONALINTERN_COLUMN_PASSWORD ) );
+            employee.setAccessLevel( resultSet.getInt( TABLE_PERSONALINTERN_COLUMN_ACCESSLEVEL ));
+            employee.setOnStatus( resultSet.getBoolean( TABLE_PERSONALINTERN_COLUMN_ONSTATUS ));
+
+        }
+        return employee;
+    }
+
+    public ResultSet showEmployee() throws SQLException
+    {
+
+        Connection link = DriverManager.getConnection("jdbc:mysql://localhost:3306/accountdb", "root", "Blackjack");
+        ResultSet tmpRS;
+
+        Statement _tmp = JdbcStorageController().createStatement();
+
+        tmpRS = this.showPersonalInternStatement.executeQuery();
+
+        while (tmpRS.next()) System.out.println(tmpRS.getString("firstName"));
+
+        link.close();
+
+        return tmpRS;
+    }
 
     public JDBCController()
     {
-        // Handling of exeptions
-
-        try
-        {
-            this.con = DriverManager.getConnection("jdbc:mysql://localhost:3306/accountdb", "root","Blackjack");
-
-            // create tables if necessary
-
-            // prepare statements
-
-            this.loadPersonByID = this.con.prepareStatement(SELECT_PERSON_BY_ID);
-            this.showPersonal = this.con.prepareStatement(SELECT_ALL_FROM_PERSON);
-
-
-        }
-        catch(SQLException e)
-        {
-            e.printStackTrace();
-            throw new InternalError(e.getMessage());
-        }
-
-
 
     }
-
-    public void loadPersonal()
-    {
-        Employee tmpEmployee;
-        List<Employee> employeeLIST = new ArrayList<>();
-
-        try
-        {
-            Statement showPersonal = this.con.createStatement();
-            ResultSet personalResultSet = showPersonal.executeQuery(SELECT_ALL_FROM_PERSON);
-
-        }
-        catch(SQLException ex)
-        {
-            LOGGER.severe("Fehler beim laden der Personalliste" + ex.getMessage());
-            ex.printStackTrace();
-        }
-    }
-
-
-
 
 }

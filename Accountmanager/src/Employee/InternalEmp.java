@@ -12,6 +12,7 @@ import java.util.Iterator;
  * Created by Ben on 02.01.2017.
  */
 /**subclass of employee, generates new projects or changes and deletes them, add employees to projects or removes them**/
+
 public class InternalEmp extends Employee {
 
     private String eMail;
@@ -48,6 +49,10 @@ public class InternalEmp extends Employee {
 
 
     // Getter + Setter
+    /**get first name of an internal employee**/
+    public String getFirstName() { return this.firstName; }
+    /**get last name of an internal employee**/
+    public String getLastName() { return this.lastName; }
     /**get email of an internal employee**/
     public String geteMail() {
         return this.eMail;
@@ -69,6 +74,10 @@ public class InternalEmp extends Employee {
         return this.onStatus;
     }
 
+    /**set id of an internal emplyoee**/
+    public void setEmpID(int _empID) { empID = _empID; }
+    /**set password of an internal emplyoee**/
+    public void setPassword(String _password) { password = _password; }
     /**set accesslevel of an internal employee**/
     public void setAccessLevel(int _newLevel) {
         accessLevel = _newLevel;
@@ -77,6 +86,8 @@ public class InternalEmp extends Employee {
     public void setOnStatus(boolean _newStatus) {
         onStatus = _newStatus;
     }
+    /**set email of an internal employee**/
+    public void setEmail(String _eMail) { eMail= _eMail;}
     /** logoutmethod **/
     public boolean logoutPersonal()
     {
