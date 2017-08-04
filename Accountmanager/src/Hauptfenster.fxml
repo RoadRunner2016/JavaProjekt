@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="2160.0" maxWidth="3960.0" minHeight="768.0" minWidth="1024.0" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ProjectScreen">
+   <children>
+      <MenuBar prefHeight="25.0" prefWidth="1920.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Programm">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Einstellungen" />
+                  <MenuItem mnemonicParsing="false" text="Abmelden" />
+                  <MenuItem mnemonicParsing="false" text="Beenden" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Projektmappe">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Exportieren" />
+                  <MenuItem mnemonicParsing="false" text="Importieren" />
+                  <MenuItem mnemonicParsing="false" text="Prüfen" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Projekt">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Erstellen" />
+                  <MenuItem mnemonicParsing="false" text="Bearbeiten" />
+                  <MenuItem mnemonicParsing="false" text="Löschen" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Fenster">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Meilensteine" />
+                  <MenuItem mnemonicParsing="false" text="Personal" />
+                  <MenuItem mnemonicParsing="false" text="Kosten" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Account">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Profil" />
+                  <MenuItem mnemonicParsing="false" text="Ticket" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Hilfe">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Website" />
+                  <MenuItem mnemonicParsing="false" text="Kontakt" />
+                  <MenuItem mnemonicParsing="false" text="Impressum" />
+               </items>
+            </Menu>
+        </menus>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </MenuBar>
+      <Pane layoutY="1049.0" prefHeight="35.0" prefWidth="1920.0" AnchorPane.bottomAnchor="-4.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1049.0" />
+      <ScrollPane layoutY="25.0" prefHeight="1021.0" prefWidth="1920.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1080.0" prefWidth="1895.0">
+               <children>
+                  <TableView prefHeight="1055.0" prefWidth="1920.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-25.0" AnchorPane.topAnchor="0.0">
+                    <columns>
+                      <TableColumn prefWidth="75.0" text="Projekt ID" />
+                      <TableColumn prefWidth="75.0" text="Standort" />
+                        <TableColumn prefWidth="75.0" text="Kunde" />
+                        <TableColumn prefWidth="75.0" text="Betreuer" />
+                        <TableColumn prefWidth="75.0" text="Personal" />
+                        <TableColumn prefWidth="75.0" text="Kosten" />
+                        <TableColumn prefWidth="75.0" text="Meilensteine" />
+                        <TableColumn prefWidth="75.0" text="Beginn" />
+                        <TableColumn prefWidth="75.0" text="Beendet" />
+                        <TableColumn prefWidth="75.0" text="Kontakt" />
+                    </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>

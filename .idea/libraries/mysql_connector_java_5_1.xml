@@ -2,11 +2,13 @@
   <library name="mysql-connector-java-5.1">
     <CLASSES>
       <root url="file://$PROJECT_DIR$/mysql-connector-java-5.1.42" />
+      <root url="file://$MAVEN_REPOSITORY$/junit/junit/4.12" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
       <root url="file://$PROJECT_DIR$/mysql-connector-java-5.1.42/src" />
     </SOURCES>
+    <jarDirectory url="file://$MAVEN_REPOSITORY$/junit/junit/4.12" recursive="false" />
     <jarDirectory url="file://$PROJECT_DIR$/mysql-connector-java-5.1.42" recursive="false" />
   </library>
 </component>

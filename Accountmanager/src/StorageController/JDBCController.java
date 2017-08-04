@@ -12,6 +12,24 @@ public class JDBCController
     public Connection connection;
 
 
+    public String Select(String _FROM)
+{
+    String preparedStatement = "";
+
+    preparedStatement = "SELECT * FROM " + _FROM ;
+
+    return preparedStatement;
+
+}
+
+    public String Select(String _FROM, String _Where)
+    {
+        String preparedStatement = "";
+
+        preparedStatement = "SELECT * FROM " + _FROM + " WHERE " + _Where + " = ?" ;
+
+        return preparedStatement;
+    }
     // "Connection" definitions
 
     private PreparedStatement loadInternalPersonal;
@@ -27,13 +45,14 @@ public class JDBCController
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/database", "root", "Blackjack");
 
             // Hier werden alle Verbindungen und deren SQL-Befehle definiert
-
+/**
             this.loadInternalPersonal = this.connection.prepareStatement("SELECT * FROM database.personalintern WHERE loginName = ?");
             this.loadAllProjects = this.connection.prepareStatement("SELECT * FROM database.projects");
+            this.loadOneProjects =this.connection.prepareStatement("SELECT * FROM database.projects WHERE projectID = ?");
             this.loadAllCosts = this.connection.prepareStatement("SELECT * FROM database.costs");
             this.loadAllPersonal = this.connection.prepareStatement("SELECT * FROM database.personal");
             this.loadAllMilestones = this.connection.prepareStatement("SELECT * FROM database.milestone");
-
+**/
             /*
 
             LESEN

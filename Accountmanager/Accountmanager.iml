@@ -9,8 +9,11 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Arquillian JUnit:Release" level="project" />
     <orderEntry type="library" name="src" level="project" />
     <orderEntry type="library" name="mysql-connector-java-5.1" level="project" />
+    <orderEntry type="library" name="junit" level="project" />
+    <orderEntry type="library" name="hamcrest" level="project" />
+    <orderEntry type="library" name="junit-4.12" level="project" />
+    <orderEntry type="library" name="scenebuilder-all-8.3.0-all" level="project" />
   </component>
 </module>
