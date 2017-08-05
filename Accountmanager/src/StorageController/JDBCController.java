@@ -13,7 +13,8 @@ import java.time.*;
 
 
 import Project.Project;
-
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 
 /**
@@ -75,7 +76,7 @@ public class JDBCController {
         return null;
     }
 
-    public ArrayList<Project> loadProjects( String _sqlString) {
+    public ObservableList<Project> loadProjects( String _sqlString) {
         ArrayList<Project> listProjects = null;
         try {
 
@@ -94,6 +95,7 @@ public class JDBCController {
 
 
 
+
             while (rs.next())
             {
 
@@ -103,21 +105,21 @@ public class JDBCController {
                 tmpDateStart = rs.getDate("projectStart");
                 tmpDateEnd = rs.getDate("projectsEnd");
 
-  
-
-
-
+                tmpDateStart.toString();
+                tmpDBStart = LocalDate.parse();
 
 
             }
 
+            ObservableList<Project> oListProjects = FXCollections.observableArrayList(listProjects);
 
+            return oListProjects;
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return listProjects;
+
     }
 
 
