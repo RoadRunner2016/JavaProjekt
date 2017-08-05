@@ -30,7 +30,7 @@ import java.sql.SQLException;
 public class LoginWindow
 {
 
-    public void start(Stage loginScreen)
+    public void start(Stage loginScreen)throws Exception
     {
 
         GridPane grid = new GridPane();
@@ -75,6 +75,8 @@ public class LoginWindow
         final Text actiontarget = new Text();
         grid.add(actiontarget, 1, 6);
 
+        loginScreen.show();
+
         btn.setOnAction
 
                 (new EventHandler<ActionEvent>()
@@ -87,7 +89,6 @@ public class LoginWindow
                         //usertextfield
                         //pwbox
                         String tmpPassword = null;
-
                         JDBCController controller = new JDBCController();
 
                         tmpPassword = controller.loadPassword(userTextField.getText(),"");
@@ -97,16 +98,29 @@ public class LoginWindow
 
                         if (tmpPassword.equals(pwBox.getText()))
                         {
-                            // open the mainwindow
 
                             actiontarget.setText("Login erfolgreich!");
+                            loginScreen.close();
+
+                            System.out.println("CLOSE");
+
+                            try {
+                                Stage primaryWindow = new Stage();
+                                MainWindow mainWindow = new MainWindow();
+                                mainWindow.start(primaryWindow);
+                            }
+                            catch(Exception exe)
+                            {
+
+                            }
+
+
 
                         }
                         else
                         {
                             actiontarget.setText("Login fehlgeschlagen");
                         }
-
 
 
                     }

@@ -2,6 +2,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
 
+import EmpDatabase.Login;
 import Employee.InternalEmp;
 
 import GUI.MainWindow;
@@ -25,27 +26,13 @@ public class Main extends Application
 
         public void start(Stage primaryStage) throws Exception
         {
-            /**
+
 
             primaryStage.setTitle("Hauptbildschirm");
-            GridPane newGrid = new GridPane();
-            Scene newScene = new Scene(newGrid);
-            primaryStage.setScene(newScene);
-            primaryStage.show();
-            primaryStage.setFullScreen(false);
+            LoginWindow mainWindow = new LoginWindow();
+            mainWindow.start(primaryStage);
 
-            Stage TestLogin = new Stage();
-            LoginWindow TestGUI = new LoginWindow();
 
-            TestGUI.start(TestLogin);
-            TestLogin.setFullScreen(false);
-            TestLogin.show();
-             **/
-
-            MainWindow mw = new MainWindow();
-
-            Stage mainwindow = new Stage();
-            mw.start(mainwindow);
 
         }
 }
