@@ -72,6 +72,12 @@ public class Project {
     public void setName(String _newName) {
         projectName = _newName;
     }
+
+    public void setID(Integer _id){projectID = _id;}
+
+    public void setStart(LocalDate _start){start = _start;}
+
+    public void setEnd(LocalDate _end){end = _end;}
     /**get list of employees involved in a project**/
     public List<Employee> getEmployees() { return employees;}
     /**get list of milestones of a project**/

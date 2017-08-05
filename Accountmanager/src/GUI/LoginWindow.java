@@ -102,8 +102,6 @@ public class LoginWindow
                             actiontarget.setText("Login erfolgreich!");
                             loginScreen.close();
 
-                            System.out.println("CLOSE");
-
                             try {
                                 Stage primaryWindow = new Stage();
                                 MainWindow mainWindow = new MainWindow();

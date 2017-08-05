@@ -1,6 +1,20 @@
 package StorageController;
 
+
 import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
+import java.time.Instant;
+import java.time.LocalTime;
+import java.time.*;
+
+
+
+
+import Project.Project;
+
+
 
 /**
  * Created by Ben on 14.05.2017.
@@ -41,6 +55,7 @@ public class JDBCController {
 
     public String loadPassword(String _loginName, String _sqlString) {
         String tmpPassword = null;
+        Instant timestamp = Instant.now();
         try {
             Statement stmt = JdbcStorageController().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM personnel");
@@ -58,6 +73,51 @@ public class JDBCController {
         }
 
         return null;
+    }
+
+    public ArrayList<Project> loadProjects( String _sqlString) {
+        ArrayList<Project> listProjects = null;
+        try {
+
+            Project tmpProject = new Project();
+
+
+
+            Statement stmt = JdbcStorageController().createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM projects");
+
+            Date tmpDateStart = null;
+            Date tmpDateEnd = null;
+            LocalDate tmpDBStart = null;
+            LocalDate tmpDBEnd = null;
+
+
+
+
+            while (rs.next())
+            {
+
+
+                tmpProject.setID(rs.getInt("projectID"));
+                tmpProject.setName((rs.getString("projectName")));
+                tmpDateStart = rs.getDate("projectStart");
+                tmpDateEnd = rs.getDate("projectsEnd");
+
+  
+
+
+
+
+
+            }
+
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listProjects;
     }
 
 
