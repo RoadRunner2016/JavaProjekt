@@ -42,7 +42,7 @@ public class InternalEmp extends Employee {
 
     /**create a new project**/
     public Project createProject(int _startYYYY, int _startMonth, int _startDay, int _endYYYY, int _endMonth, int _endDay, String _nameOfNewProj) {
-        Project newP = new Project(_startYYYY, _startMonth, _startDay, _endYYYY, _endMonth, _endDay);
+        Project newP = new Project("",_startYYYY, _startMonth, _startDay, _endYYYY, _endMonth, _endDay);
         newP.setName(_nameOfNewProj);
         return newP;
     }

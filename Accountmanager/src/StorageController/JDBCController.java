@@ -6,14 +6,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.time.Instant;
-import java.time.LocalTime;
-import java.time.*;
+
 
 
 
 
 import Project.Project;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 
@@ -21,6 +19,13 @@ import javafx.collections.ObservableList;
  * Created by Ben on 14.05.2017.
  */
 public class JDBCController {
+
+    private static final String PERSONNEL = "prg4.personnel";
+    private static final String EMPLOYEE = "prg4.employees";
+    private static final String MILESTONE = "prg4.milestones";
+    private static final String MESSAGE = "prg4.messages";
+    private static final String PROJECT = "prg4.projects";
+
     public Connection connection;
 
 
@@ -33,10 +38,18 @@ public class JDBCController {
 
     }
 
-    public String Select(String _FROM, String _Where) {
+    public String Select(String FROM, String WHERE) {
         String preparedStatement = "";
 
-        preparedStatement = "SELECT * FROM " + _FROM + " WHERE " + _Where + " = ?";
+        preparedStatement = "SELECT * FROM " + FROM + " WHERE " + WHERE + " = ?";
+
+        return preparedStatement;
+    }
+
+    public String Select(String FROM, String WHERE, String _EQUALS) {
+        String preparedStatement = "";
+
+        preparedStatement = "SELECT * FROM " + FROM + " WHERE " + WHERE + " = '" + _EQUALS + "'";
 
         return preparedStatement;
     }
@@ -54,17 +67,18 @@ public class JDBCController {
     }
 
 
-    public String loadPassword(String _loginName, String _sqlString) {
+    public boolean loadPassword(String _loginName, String _pw) {
         String tmpPassword = null;
         Instant timestamp = Instant.now();
+        System.out.println(_loginName + _pw );
+
         try {
             Statement stmt = JdbcStorageController().createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM personnel");
-
-            while (rs.next()) {
-                if (rs.getString("personnelLoginName").equals(_loginName)) {
-                    tmpPassword = rs.getString("personnelPassword");
-                    return tmpPassword;
+            ResultSet rs = stmt.executeQuery(this.Select(PERSONNEL,"personnelLoginName",_loginName));
+            if(rs.next()) {
+                System.out.println(_loginName + _pw + rs.getString("personnelPassword"));
+                if(rs.getString("personnelPassword").equals(_pw)) {
+                    return true;
                 }
 
             }
@@ -73,24 +87,22 @@ public class JDBCController {
             e.printStackTrace();
         }
 
-        return null;
-    }
 
+        return false;
+    }
     public ObservableList<Project> loadProjects( String _sqlString) {
         ArrayList<Project> listProjects = null;
+        ObservableList<Project> oListProjects = null;
         try {
 
-            Project tmpProject = new Project();
+            Project tmpProject = null;
 
 
 
             Statement stmt = JdbcStorageController().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM projects");
 
-            Date tmpDateStart = null;
-            Date tmpDateEnd = null;
-            LocalDate tmpDBStart = null;
-            LocalDate tmpDBEnd = null;
+
 
 
 
@@ -100,18 +112,23 @@ public class JDBCController {
             {
 
 
+
+                Date tmpDateStart = rs.getDate("projectStart");
+                Date tmpDateEnd = rs.getDate("projectsEnd");
+
+                LocalDate tmpDBStart = LocalDate.parse(tmpDateStart.toString());
+                LocalDate tmpDBEnd = LocalDate.parse(tmpDateEnd.toString());
+
+                tmpProject = new Project(rs.getString("projectName"),tmpDBStart,tmpDBEnd);
                 tmpProject.setID(rs.getInt("projectID"));
-                tmpProject.setName((rs.getString("projectName")));
-                tmpDateStart = rs.getDate("projectStart");
-                tmpDateEnd = rs.getDate("projectsEnd");
 
-                tmpDateStart.toString();
-                tmpDBStart = LocalDate.parse();
-
-
+                System.out.println(tmpProject.getName() + " " + tmpProject.getStartDateString() + " " + tmpProject.getEndDateString());
             }
 
-            ObservableList<Project> oListProjects = FXCollections.observableArrayList(listProjects);
+            /**
+             * oListProjects = FXCollections.observableArrayList(listProjects);
+             */
+
 
             return oListProjects;
 
@@ -119,7 +136,7 @@ public class JDBCController {
             e.printStackTrace();
         }
 
-
+        return oListProjects;
     }
 
 

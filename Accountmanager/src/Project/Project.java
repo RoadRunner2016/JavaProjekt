@@ -1,9 +1,9 @@
 package Project;
 
 import Employee.Employee;
-
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +23,8 @@ public class Project {
     private static int idCounter = 10000;
 
     //Constructors
-    public Project(LocalDate _startDate, LocalDate _endDate) {
+    public Project(String _name, LocalDate _startDate, LocalDate _endDate) {
+        projectName = _name;
         start = _startDate;
         end = _endDate;
         projectID = idCounter;
@@ -33,13 +34,15 @@ public class Project {
         projectCosts = new Cost(start, end, employees);
     }
 
-    public Project() {
-        this(LocalDate.now(), LocalDate.now().plusWeeks(1));
+    public Project(String _name) {
+
+        this(_name, LocalDate.now(), LocalDate.now().plusWeeks(1));
     }
 
-    public Project(int _startYYYY, int _startMonth, int _startDay, int _endYYYY, int _endMonth, int _endDay) {
-        this(LocalDate.of(_startYYYY, _startMonth, _startDay), LocalDate.of(_endYYYY, _endMonth, _endDay));
+    public Project(String _name, int _startYYYY, int _startMonth, int _startDay, int _endYYYY, int _endMonth, int _endDay) {
+        this(_name, LocalDate.of(_startYYYY, _startMonth, _startDay), LocalDate.of(_endYYYY, _endMonth, _endDay));
     }
+
 
     //Methods
     /**get enddate of a project**/
@@ -82,6 +85,16 @@ public class Project {
     public List<Employee> getEmployees() { return employees;}
     /**get list of milestones of a project**/
     public List<Milestones> getMilestones() { return milestones;}
+
+    public String getEndDateString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        return end.format(formatter).toString();
+    }
+    public String getStartDateString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        return start.format(formatter).toString();
+    }
+
 
     /** check at the start of the program all milestones of a project for appointments **/
     public boolean checkAllMilestones()

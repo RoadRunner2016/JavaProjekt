@@ -89,34 +89,28 @@ public class LoginWindow
                         //usertextfield
                         //pwbox
                         String tmpPassword = null;
-                        JDBCController controller = new JDBCController();
 
-                        tmpPassword = controller.loadPassword(userTextField.getText(),"");
-                        System.out.println(tmpPassword);
+                        JDBCController jdbc = new JDBCController();
 
                         actiontarget.setFill(Color.FIREBRICK);
 
-                        if (tmpPassword.equals(pwBox.getText()))
-                        {
-
+                        if (jdbc.loadPassword(userTextField.getText(), pwBox.getText())) {
+                            // open the mainwindow
                             actiontarget.setText("Login erfolgreich!");
                             loginScreen.close();
+                            MainWindow mw = new MainWindow();
 
+                            Stage mainwindow = new Stage();
                             try {
-                                Stage primaryWindow = new Stage();
-                                MainWindow mainWindow = new MainWindow();
-                                mainWindow.start(primaryWindow);
-                            }
-                            catch(Exception exe)
+                                mw.start(mainwindow);
+                            } catch (Exception ex)
                             {
-
+                                ex.printStackTrace();
                             }
 
-
-
-                        }
-                        else
+                        } else
                         {
+
                             actiontarget.setText("Login fehlgeschlagen");
                         }
 

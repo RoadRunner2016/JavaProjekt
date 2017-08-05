@@ -1,3 +1,4 @@
+
 package Unittests;
 
 import Project.*;
@@ -19,7 +20,7 @@ public class  ProjectTest {
     @Before
     public void setUp()
     {
-        testProject = new Project(2017,1,1,2017,1,31);
+        testProject = new Project("asd",2017,1,1,2017,1,31);
         testEEmp = new ExternalEmp("Max", "Mustermann");
         testEEmp2 = new ExternalEmp("Max", "Mustermann");
         testEEmp.setSalary(1500);
@@ -34,7 +35,7 @@ public class  ProjectTest {
         testProject.getEmployees().add(testEEmp);
         testProject.getEmployees().add(testEEmp2);
 
-    Assert.assertTrue(testProject.getProjectCosts().getCalculatedStaffCosts() >= 2000);
+        Assert.assertTrue(testProject.getProjectCosts().getCalculatedStaffCosts() >= 2000);
 
     }
 

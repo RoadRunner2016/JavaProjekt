@@ -1,15 +1,13 @@
 package Unittests;
 
-import EmpDatabase.EmpDatabase;
-import Employee.ExternalEmp;
-import Employee.InternalEmp;
-import Project.*;
-
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.time.LocalDate;
+        import EmpDatabase.EmpDatabase;
+        import Employee.ExternalEmp;
+        import Employee.InternalEmp;
+        import Project.*;
+        import org.junit.Assert;
+        import org.junit.Before;
+        import org.junit.Test;
+        import java.time.LocalDate;
 
 /**
  * Created by Admin on 05.03.2017.
@@ -34,8 +32,8 @@ public class IntegrityTest
     {
         Controller = new InternalEmp("Karl","Heinz","Karl.H@gmx.de");
         TestDatabase = new EmpDatabase();
-        TestProject1 = new Project(2017,1,1,2017,1,31);
-        TestProject2 = new Project(2017,1,17,2017,3,3);
+        TestProject1 = new Project("asd",2017,1,1,2017,1,31);
+        TestProject2 = new Project("asd",2017,1,17,2017,3,3);
         TestEmployee1 = new ExternalEmp("Worker", "John");
         TestEmployee2 = new ExternalEmp( "Worker", "Doe");
         TestMilestone1 = new Milestones(1, "Programmieren 3", "Abgabe erfolgt über GitHub", LocalDate.of(2017,03,05));
@@ -107,4 +105,3 @@ public class IntegrityTest
         //
     }
 }
-

@@ -7,10 +7,8 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
+
 
 /**
  * Created by A on 06.02.2017.
@@ -30,8 +28,8 @@ public class InternalTest {
         controller = new InternalEmp();
         controller.setAccessLevel(5);
         myDB = new EmpDatabase();
-        TestProject = new Project(2017, 1,1,2017,1,31);
-       // myDB.tmpEdatabase.add(controller);
+        TestProject = new Project("prj1",2017, 1,1,2017,1,31);
+        // myDB.tmpEdatabase.add(controller);
     }
 
     @After
@@ -140,10 +138,10 @@ public class InternalTest {
     public void test_addPersonnelToProject()
     {
 
-        Project myNewProj = new Project(2016,10,17,2017,3,3);
-        Project myOtherNewProj = new Project(2017,1,17,2017,3,3);
-        Project myThirdNewProj = new Project();
-        Project myLastNewProj = new Project();
+        Project myNewProj = new Project("p",2016,10,17,2017,3,3);
+        Project myOtherNewProj = new Project("p",2017,1,17,2017,3,3);
+        Project myThirdNewProj = new Project("p1");
+        Project myLastNewProj = new Project("p2");
         ExternalEmp extEmp0 = new ExternalEmp("Fussvolk","Eins");
         ExternalEmp extEmp1 = new ExternalEmp("Fussvolk","Zwei");
         ExternalEmp extEmp2 = new ExternalEmp("Fussvolk","Drei");
@@ -183,8 +181,8 @@ public class InternalTest {
     public void test_removePersonnelFromProject()
     {
 
-        Project myNewProj = new Project(2016,10,17,2017,3,3);
-        Project myOtherNewProj = new Project(2017,1,17,2017,3,3);
+        Project myNewProj = new Project("asd",2016,10,17,2017,3,3);
+        Project myOtherNewProj = new Project("asd",2017,1,17,2017,3,3);
 
         ExternalEmp extEmp0 = new ExternalEmp("Fussvolk","Eins");
         ExternalEmp extEmp1 = new ExternalEmp("Fussvolk","Zwei");

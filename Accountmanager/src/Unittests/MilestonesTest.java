@@ -24,7 +24,7 @@ public class MilestonesTest
 
     public void setUp()
     {
-        testProject = new Project();
+        testProject = new Project("asd");
         testMilestone1 = new Milestones();
         testMilestone2 = new Milestones();
         testEmployee = new InternalEmp();
