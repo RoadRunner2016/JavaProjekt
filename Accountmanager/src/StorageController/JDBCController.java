@@ -25,7 +25,6 @@ public class JDBCController {
 
         return preparedStatement;
     }
-    // "Connection" definitions
 
     public Connection JdbcStorageController() {
         try {
