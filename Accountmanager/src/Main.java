@@ -1,4 +1,5 @@
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.*;
 
 import Employee.InternalEmp;
@@ -22,7 +23,7 @@ public class Main extends Application
             Application.launch(args);
         }
 
-        public void start(Stage stage) throws Exception
+        public void start(Stage primaryStage) throws Exception
         {
             /**
 
@@ -41,20 +42,15 @@ public class Main extends Application
             TestLogin.show();
              **/
 
-            FXMLLoader loader = new FXMLLoader();
-            String fxmlDocPath = "file:///C:/Users/Admin/IdeaProjects/JavaProjekt/Accountmanager/src/MainWindow.fxml";
-            FileInputStream fxmlStream = new FileInputStream(fxmlDocPath);
-            VBox root = (VBox) loader.load(fxmlStream);
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setTitle("A simple FXML Example");
-            stage.show();
+            MainWindow mw = new MainWindow();
 
+            Stage mainwindow = new Stage();
+            mw.start(mainwindow);
 
         }
-
-
 }
+
+
 
 
 
