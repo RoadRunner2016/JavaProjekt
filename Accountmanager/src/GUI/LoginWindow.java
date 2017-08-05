@@ -12,6 +12,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -49,11 +50,15 @@ public class LoginWindow
         Label userName = new Label("Loginname:");
         grid.add(userName, 0, 1);
 
+        //LOGIN textfield
+
         TextField userTextField = new TextField();
         grid.add(userTextField, 1, 1);
 
         Label pw = new Label("Password:");
         grid.add(pw, 0, 2);
+
+        //Password textfield
 
         PasswordField pwBox = new PasswordField();
         grid.add(pwBox, 1, 2);
@@ -62,7 +67,7 @@ public class LoginWindow
 
         Button btn = new Button("Anmelden");
         HBox hbBtn = new HBox(10);
-        hbBtn.setAlignment(Pos.BOTTOM_CENTER);
+        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(btn);
         grid.add(hbBtn, 1, 4);
 
@@ -77,6 +82,30 @@ public class LoginWindow
 
                     public void handle(ActionEvent e)
                     {
+                        actiontarget.setText("");
+
+                        //usertextfield
+                        //pwbox
+                        String tmpPassword = null;
+
+                        JDBCController controller = new JDBCController();
+
+                        tmpPassword = controller.loadPassword(userTextField.getText(),"");
+                        System.out.println(tmpPassword);
+
+                        actiontarget.setFill(Color.FIREBRICK);
+
+                        if (tmpPassword.equals(pwBox.getText()))
+                        {
+                            // open the mainwindow
+
+                            actiontarget.setText("Login erfolgreich!");
+
+                        }
+                        else
+                        {
+                            actiontarget.setText("Login fehlgeschlagen");
+                        }
 
 
 

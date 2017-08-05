@@ -53,13 +53,11 @@ public class JDBCController {
 
             }
 
-            System.out.println("Loginname wurde nichtgefunden!");
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return tmpPassword;
+        return null;
     }
 
 
