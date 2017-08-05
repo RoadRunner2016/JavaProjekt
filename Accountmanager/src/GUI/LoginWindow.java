@@ -18,7 +18,7 @@ import javafx.stage.Stage;
  * Created by Ben on 26.04.2017.
  */
 
-public class Login
+public class LoginWindow
 {
 
     public void start(Stage loginScreen)
