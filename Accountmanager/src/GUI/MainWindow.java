@@ -18,7 +18,7 @@ public class MainWindow extends Application{
 
     public void start(Stage stage) throws Exception {
         FXMLLoader	loader	=
-                new	FXMLLoader(getClass().getResource("MainWindow.fxml"));
+                new	FXMLLoader(getClass().getResource("MainWindow2.fxml"));
         Pane root = (Pane) loader.load();
         Scene scene = new Scene(root);
         stage.setScene(scene);

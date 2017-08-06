@@ -13,6 +13,7 @@ import Project.Project;
 public abstract class Employee
 {
     private static final int START_ID = 2017000000;
+    protected Integer projectID;
     protected static int idCounter = START_ID;
     protected String firstName;
     protected String lastName;
@@ -48,5 +49,12 @@ public abstract class Employee
         this.lastName = _lastName;
 
     };
+
+    public void setID(Integer _employeeID)
+    {
+        this.empID = _employeeID;
+    }
+
+    public void setProjectID(Integer _projectID){this.projectID =_projectID;};
 
 }

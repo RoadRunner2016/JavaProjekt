@@ -6,16 +6,16 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.time.Instant;
-import java.time.ZoneId;
-
-
+import java.util.List;
 import Project.Project;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import Employee.Employee;
+import Project.*;
 
 
 /**
@@ -122,6 +122,136 @@ public class JDBCController {
 
 
 
+    //List Employees für Projekt
+    public List<Employee> loadEmployeeForProject(Integer _porjectID) {
+
+        List<Employee> tmpListEmployee = null;
+        Employee tmpEmployee = null;
+
+        try {
+
+            Statement stmt = JdbcStorageController().createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM employee WHERE employeeProject = '"+_porjectID+"'");
+
+            while (rs.next())
+            {
+                tmpEmployee.setID(rs.getInt("employeeID"));
+                tmpEmployee.setFirstName(rs.getString("employeeFirstName"));
+                tmpEmployee.setLastName(rs.getString("employeeLastName"));
+                tmpEmployee.setSalary(rs.getDouble("employeeSalery"));
+                tmpEmployee.setProjectID(rs.getInt("employeeProject"));
+
+
+                tmpListEmployee.add(tmpEmployee);
+            }
+
+            return tmpListEmployee ;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    //List Employees ungleich Projekt
+    public List<Employee> loadEmployeeNotProject(Integer _porjectID) {
+
+        List<Employee> tmpListEmployee = null;
+        Employee tmpEmployee = null;
+
+        try {
+
+            Statement stmt = JdbcStorageController().createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM employee WHERE employeeProject != '"+_porjectID+"'");
+
+            while (rs.next())
+            {
+                tmpEmployee.setID(rs.getInt("employeeID"));
+                tmpEmployee.setFirstName(rs.getString("employeeFirstName"));
+                tmpEmployee.setLastName(rs.getString("employeeLastName"));
+                tmpEmployee.setSalary(rs.getDouble("employeeSalery"));
+                tmpEmployee.setProjectID(rs.getInt("employeeProject"));
+
+
+                tmpListEmployee.add(tmpEmployee);
+            }
+
+            return tmpListEmployee ;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    //List allEmployees
+    public List<Employee> loadAllEmployee(Integer _porjectID) {
+
+        List<Employee> tmpListEmployee = null;
+        Employee tmpEmployee = null;
+
+        try {
+
+            Statement stmt = JdbcStorageController().createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM employee");
+
+            while (rs.next())
+            {
+                tmpEmployee.setID(rs.getInt("employeeID"));
+                tmpEmployee.setFirstName(rs.getString("employeeFirstName"));
+                tmpEmployee.setLastName(rs.getString("employeeLastName"));
+                tmpEmployee.setSalary(rs.getDouble("employeeSalery"));
+                tmpEmployee.setProjectID(rs.getInt("employeeProject"));
+
+
+                tmpListEmployee.add(tmpEmployee);
+            }
+
+            return tmpListEmployee ;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    //Objekt Liste Milestones Arraylist
+    public List<Milestones> loadAllMilestone() {
+
+        List<Milestones> tmpListMilestones = null;
+        Milestones tmpMilestone = null;
+
+        try {
+
+            Statement stmt = JdbcStorageController().createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM milestones");
+
+            Date tmpDate = null;
+
+
+            while (rs.next())
+            {
+                tmpMilestone.setMilestoneID(rs.getInt("milestoneID"));
+                tmpMilestone.setMilestoneProjectID(rs.getInt("projectID"));
+                tmpDate = (rs.getDate("milestoneDate"));
+                tmpMilestone.setMilestoneInfo(rs.getString("milestoneDescription"));
+                tmpMilestone.setDateOfMilestone(tmpDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+
+                tmpListMilestones.add(tmpMilestone);
+            }
+
+            return tmpListMilestones;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+
+
     // SQL-Setter
     public boolean saveProjects(String _name,Integer _dayStart,Integer _monthStart,Integer _yearStart,Integer _dayEnd,Integer _monthEnd,Integer _yearEnd,String _admin ) throws ParseException {
 
@@ -156,6 +286,12 @@ public class JDBCController {
         }
         return false;
     }
+
+
+
+
+    // SQL-Insert into
+
     public boolean saveEmployees(String _firstName,String _lastName, Integer _salery, Integer _project ) throws ParseException {
 
         try

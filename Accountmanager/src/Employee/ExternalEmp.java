@@ -13,6 +13,8 @@ public class ExternalEmp extends Employee
 {
     private int numberOfProjectsInvolved;
 
+
+
     public ExternalEmp(String _firstName, String _lastName)
     {
         firstName = _firstName;
@@ -21,7 +23,6 @@ public class ExternalEmp extends Employee
         idCounter++;
         projectsInvolved = new ArrayList<Project>();
     }
-
     /**get number of projects the external employee is involved**/
     public int getNumberOfProjectsInvolved()
     {

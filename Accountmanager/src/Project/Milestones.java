@@ -10,6 +10,7 @@ public class Milestones {
     private String MilestoneName;
     private String MilestoneInfo;
     private LocalDate DateOfMilestone;
+    private Integer ProjectID;
     //Construtor
 
     public Milestones()
@@ -54,5 +55,6 @@ public class Milestones {
 
         return true;
     }
+    public boolean setMilestoneProjectID(Integer _MilestoneProjectID){this.ProjectID =_MilestoneProjectID; return true;}
 }
 

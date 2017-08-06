@@ -19,9 +19,8 @@ public class Main extends Application
 
     public void start(Stage primaryStage) throws Exception
     {
-        JDBCController controller = new JDBCController();
-
-        controller.saveProjects("Speicherung", 1940, 11, 31,12,2,19944,"Keule");
+        MainWindow mainWindow = new MainWindow();
+        mainWindow.start(primaryStage);
 
 
 
