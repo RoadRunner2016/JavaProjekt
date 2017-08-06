@@ -1,7 +1,6 @@
 package Employee;
 
 import Project.Project;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,15 +12,19 @@ public class ExternalEmp extends Employee
 {
     private int numberOfProjectsInvolved;
 
-
-
     public ExternalEmp(String _firstName, String _lastName)
     {
         firstName = _firstName;
         lastName = _lastName;
-        empID = idCounter;
-        idCounter++;
         projectsInvolved = new ArrayList<Project>();
+    }
+
+    public ExternalEmp(String _firstName, String _lastName, Double _salary,Integer _projectID)
+    {
+        firstName = _firstName;
+        lastName = _lastName;
+        monthlySalary =_salary;
+        projectID = _projectID;
     }
     /**get number of projects the external employee is involved**/
     public int getNumberOfProjectsInvolved()

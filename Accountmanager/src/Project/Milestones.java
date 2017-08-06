@@ -18,10 +18,13 @@ public class Milestones {
 
     public Milestones(Integer _ID, String _Name, String _Info, LocalDate _Date  )
     {
-        _ID = 0;
-        _Name = "Abnahme";
-        _Info = "Voraussetzungen";
+        ID = _ID;
+        MilestoneName = _Name;
+        MilestoneInfo = _Info;
+        DateOfMilestone = _Date;
     }
+
+
 
     // Getter
     public Integer getMilestoneID() {

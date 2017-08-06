@@ -14,10 +14,9 @@ import java.util.*;
 import Project.Project;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import Employee.Employee;
+import Employee.ExternalEmp;
 import Project.Milestones;
 import Project.Material;
-import Project.Cost;
 
 import static jdk.nashorn.internal.runtime.regexp.joni.Syntax.Java;
 
@@ -28,7 +27,6 @@ import static jdk.nashorn.internal.runtime.regexp.joni.Syntax.Java;
 public class JDBCController {
 
     private static final String PERSONNEL = "prg4.personnel";
-
     public Connection connection;
     public String Select(String _FROM) {
         String preparedStatement = "";
@@ -66,10 +64,6 @@ public class JDBCController {
 
 
     // SQL-Getter
-
-
-
-
     public boolean loadPassword(String _loginName, String _pw) {
         String tmpPassword = null;
         Instant timestamp = Instant.now();
@@ -123,10 +117,9 @@ public class JDBCController {
 
         return oListProjects;
     }
-    public List<Employee> loadEmployeeForProject(Integer _porjectID) {
+    public List<ExternalEmp> loadEmployeeForProject(Integer _porjectID) {
 
-        List<Employee> tmpListEmployee = null;
-        Employee tmpEmployee = null;
+        List<ExternalEmp> tmpListEmployee = new ArrayList<ExternalEmp>();
 
         try {
 
@@ -135,14 +128,7 @@ public class JDBCController {
 
             while (rs.next())
             {
-                tmpEmployee.setID(rs.getInt("employeeID"));
-                tmpEmployee.setFirstName(rs.getString("employeeFirstName"));
-                tmpEmployee.setLastName(rs.getString("employeeLastName"));
-                tmpEmployee.setSalary(rs.getDouble("employeeSalery"));
-                tmpEmployee.setProjectID(rs.getInt("employeeProject"));
-
-
-                tmpListEmployee.add(tmpEmployee);
+                tmpListEmployee.add(new ExternalEmp(rs.getString("employeeFirstName"),rs.getString("employeeLastName"),rs.getDouble("employeeSalery"),rs.getInt("employeeProject")));
             }
 
             return tmpListEmployee ;
@@ -153,26 +139,18 @@ public class JDBCController {
 
         return null;
     }
-    public List<Employee> loadEmployeeNotProject(Integer _porjectID) {
+    public List<ExternalEmp> loadEmployeeNotProject(Integer _porjectID) {
 
-        List<Employee> tmpListEmployee = null;
-        Employee tmpEmployee = null;
-
+        List<ExternalEmp> tmpListEmployee =  new ArrayList<ExternalEmp>();
         try {
 
             Statement stmt = JdbcStorageController().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM employee WHERE employeeProject != '"+_porjectID+"'");
 
+            //String _firstName, String _lastName, Double _salary,Integer _projectID)
             while (rs.next())
             {
-                tmpEmployee.setID(rs.getInt("employeeID"));
-                tmpEmployee.setFirstName(rs.getString("employeeFirstName"));
-                tmpEmployee.setLastName(rs.getString("employeeLastName"));
-                tmpEmployee.setSalary(rs.getDouble("employeeSalery"));
-                tmpEmployee.setProjectID(rs.getInt("employeeProject"));
-
-
-                tmpListEmployee.add(tmpEmployee);
+                tmpListEmployee.add(new ExternalEmp(rs.getString("employeeFirstName"),rs.getString("employeeLastName"),rs.getDouble("employeeSalery"),rs.getInt("employeeProject")));
             }
 
             return tmpListEmployee ;
@@ -183,58 +161,39 @@ public class JDBCController {
 
         return null;
     }
-    public List<Employee> loadAllEmployee(Integer _porjectID) {
+    public List<ExternalEmp> loadAllEmployee(Integer _porjectID) {
 
-        List<Employee> tmpListEmployee = null;
-        Employee tmpEmployee = null;
-
+        List<ExternalEmp> tmpListEmployee = new ArrayList<ExternalEmp>();
         try {
 
             Statement stmt = JdbcStorageController().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM employee");
+            while (rs.next()) {
+                tmpListEmployee.add(new ExternalEmp(rs.getString("employeeFirstName"), rs.getString("employeeLastName"), rs.getDouble("employeeSalery"), rs.getInt("employeeProject")));
 
-            while (rs.next())
-            {
-                tmpEmployee.setID(rs.getInt("employeeID"));
-                tmpEmployee.setFirstName(rs.getString("employeeFirstName"));
-                tmpEmployee.setLastName(rs.getString("employeeLastName"));
-                tmpEmployee.setSalary(rs.getDouble("employeeSalery"));
-                tmpEmployee.setProjectID(rs.getInt("employeeProject"));
-
-
-                tmpListEmployee.add(tmpEmployee);
+                return tmpListEmployee;
             }
-
-            return tmpListEmployee ;
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return null;
     }
     public ArrayList<Milestones> loadAllMilestone() {
 
-        ArrayList<Milestones> tmpListMilestones = null;
-        Milestones tmpMilestone = null;
+        ArrayList<Milestones> tmpListMilestones = new ArrayList<Milestones>();
+        Milestones tmpMilestone = new Milestones();
 
         try {
 
             Statement stmt = JdbcStorageController().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM milestones");
 
-            Date tmpDate = null;
+            Date tmpDate;
 
 
             while (rs.next())
             {
-                tmpMilestone.setMilestoneID(rs.getInt("milestoneID"));
-                tmpMilestone.setMilestoneProjectID(rs.getInt("projectID"));
-                tmpDate = (rs.getDate("milestoneDate"));
-                tmpMilestone.setMilestoneInfo(rs.getString("milestoneDescription"));
-                tmpMilestone.setDateOfMilestone(tmpDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-
-                tmpListMilestones.add(tmpMilestone);
+                tmpListMilestones.add(new Milestones(rs.getInt("milestoneID"),rs.getString("milestoneName"),rs.getString("milestoneDescription"),rs.getDate("milestoneDate").toInstant().atZone(ZoneId.systemDefault()).toLocalDate()));
             }
 
             return tmpListMilestones;
@@ -247,8 +206,8 @@ public class JDBCController {
     }
     public ArrayList<Milestones> loadMilestoneProjects(Integer _projectID) {
 
-        ArrayList<Milestones> tmpListMilestones = null;
-        Milestones tmpMilestone = null;
+        ArrayList<Milestones> tmpListMilestones = new ArrayList<Milestones>();
+        Milestones tmpMilestone = new Milestones();
 
         try {
 
@@ -257,16 +216,12 @@ public class JDBCController {
 
             java.sql.Date tmpDate;
 
-
+            //public Milestones(Integer _ID, String _Name, String _Info, LocalDate _Date  )
             while (rs.next())
             {
-                tmpMilestone.setMilestoneID(rs.getInt("milestoneID"));
-                tmpMilestone.setMilestoneProjectID(rs.getInt("projectID"));
-                tmpDate = (rs.getDate("milestoneDate"));
-                tmpMilestone.setMilestoneInfo(rs.getString("milestoneDescription"));
-                tmpMilestone.setDateOfMilestone(tmpDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-                tmpListMilestones.add(tmpMilestone);
+                tmpListMilestones.add(new Milestones(rs.getInt("milestoneID"),rs.getString("milestoneName"),rs.getString("milestoneDescription"),rs.getDate("milestoneDate").toInstant().atZone(ZoneId.systemDefault()).toLocalDate()));
             }
+
 
             return tmpListMilestones;
 
@@ -278,7 +233,7 @@ public class JDBCController {
     }
     public ObservableList<Material>loadMaterial()
     {
-        ObservableList<Material> tmpListMaterial = null;
+        ObservableList<Material> tmpListMaterial = FXCollections.observableArrayList();
         Material tmpMaterial = null;
 
         try {
