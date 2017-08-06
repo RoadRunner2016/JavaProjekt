@@ -24,14 +24,8 @@ import javafx.collections.ObservableList;
 public class JDBCController {
 
     private static final String PERSONNEL = "prg4.personnel";
-    private static final String EMPLOYEE = "prg4.employees";
-    private static final String MILESTONE = "prg4.milestones";
-    private static final String MESSAGE = "prg4.messages";
-    private static final String PROJECT = "prg4.projects";
 
     public Connection connection;
-
-
     public String Select(String _FROM) {
         String preparedStatement = "";
 
@@ -40,7 +34,6 @@ public class JDBCController {
         return preparedStatement;
 
     }
-
     public String Select(String FROM, String WHERE) {
         String preparedStatement = "";
 
@@ -48,7 +41,6 @@ public class JDBCController {
 
         return preparedStatement;
     }
-
     public String Select(String FROM, String WHERE, String _EQUALS) {
         String preparedStatement = "";
 
@@ -56,7 +48,6 @@ public class JDBCController {
 
         return preparedStatement;
     }
-
     public Connection JdbcStorageController() {
         try {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/prg4", "root", "Blackjack");
@@ -68,6 +59,11 @@ public class JDBCController {
 
         return connection;
     }
+
+
+    // SQL-Getter
+
+
 
 
     public boolean loadPassword(String _loginName, String _pw) {
@@ -124,6 +120,9 @@ public class JDBCController {
         return oListProjects;
     }
 
+
+
+    // SQL-Setter
     public boolean saveProjects(String _name,Integer _dayStart,Integer _monthStart,Integer _yearStart,Integer _dayEnd,Integer _monthEnd,Integer _yearEnd,String _admin ) throws ParseException {
 
         String startDate = _yearStart + "-" + _monthStart + "-" + _dayStart;
@@ -157,8 +156,6 @@ public class JDBCController {
         }
         return false;
     }
-
-
     public boolean saveEmployees(String _firstName,String _lastName, Integer _salery, Integer _project ) throws ParseException {
 
         try
@@ -249,6 +246,95 @@ public class JDBCController {
         }
         return false;
     }
+
+    // SQL-Deleter
+
+    public boolean deleteProject(Integer _projectID)
+    {
+        try
+        {
+            Statement stmt = JdbcStorageController().createStatement();
+            String deleteImage = "DELETE FROM images " + "WHERE projectID = '"+_projectID+"'";
+            String deleteMilestones = "DELETE FROM milestone " + "WHERE projectID = '"+_projectID+"'";
+            String deleteProjectMaterial = "DELETE FROM project_material " + "WHERE projectID = '"+_projectID+"'";
+            String deleteMessage = "DELETE FROM message " + "WHERE projectID = '"+_projectID+"'";
+            String deleteEntryEmployee = "UPDATE employee" + "SET projectID = null" + " WHERE projectID = '"+_projectID+"'";
+            String deleteProject = "DELETE FROM project " + "WHERE projectID = '"+_projectID+"'";
+
+
+            PreparedStatement psDelete = connection.prepareStatement(deleteImage);
+            psDelete.executeUpdate();
+            psDelete = connection.prepareStatement(deleteMilestones);
+            psDelete.executeUpdate();
+            psDelete = connection.prepareStatement(deleteProjectMaterial);
+            psDelete.executeUpdate();
+            psDelete = connection.prepareStatement(deleteMessage);
+            psDelete.executeUpdate();
+            psDelete = connection.prepareStatement(deleteEntryEmployee);
+            psDelete.executeUpdate();
+            psDelete = connection.prepareStatement(deleteProject);
+            psDelete.executeUpdate();
+
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+
+
+
+    }
+    public boolean deleteEmployee(Integer _employeeID)
+    {
+        try
+        {
+            Statement stmt = JdbcStorageController().createStatement();
+            String deleteEmployee = "DELETE FROM employee " + "WHERE employeeID = '"+_employeeID+"'";
+
+            PreparedStatement psDeleteEmployee = connection.prepareStatement(deleteEmployee);
+            psDeleteEmployee.executeUpdate();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public boolean deleteImage(Integer _imagesID)
+    {
+        try
+        {
+            Statement stmt = JdbcStorageController().createStatement();
+            String deleteImgages = "DELETE FROM images " + "WHERE imagesID = '"+_imagesID+"'";
+            PreparedStatement psDeleteImages = connection.prepareStatement(deleteImgages);
+            psDeleteImages.executeUpdate();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public boolean deleteMileStone(Integer _milestoneID)
+    {
+        try
+        {
+            Statement stmt = JdbcStorageController().createStatement();
+            String deleteMilestone = "DELETE FROM milestone " + "WHERE milestoneID = '"+_milestoneID+"'";
+            PreparedStatement psDeleteMilestone = connection.prepareStatement(deleteMilestone);
+            psDeleteMilestone.executeUpdate();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+
+
 
 
 
