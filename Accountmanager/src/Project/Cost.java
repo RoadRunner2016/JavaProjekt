@@ -2,6 +2,7 @@ package Project;
 
 import Employee.Employee;
 
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.time.Period;
 import java.time.LocalDate;
@@ -19,7 +20,7 @@ public class Cost {
     private LocalDate projectStart;
     private LocalDate projectEnd;
     private List<Employee> employees;
-    private Map<String, Double> materialCosts = new HashMap<>();
+    private Map<Material, Integer> materialCosts = new HashMap<>();
 
     public void setEndDate(LocalDate _newEnd)
     {
@@ -32,15 +33,15 @@ public class Cost {
     {
         double sumDailySalary = 0;
         double sum = 0;
-        Period projectDuration = Period.between(projectStart,projectEnd);
+        long projectDuration = ChronoUnit.DAYS.between(projectStart,projectEnd);
         for(Employee e: employees)
         {
            sumDailySalary += e.getSalary()/30;
 
         }
-        System.out.println((projectDuration.getDays() * sumDailySalary));
-        sum = (projectDuration.getDays() * sumDailySalary);
-        sum = Math.round(sum*10);
+
+        sum = (projectDuration * sumDailySalary);
+        sum = Math.round(sum*10)/10;
         return sum;
     }
 
@@ -48,14 +49,20 @@ public class Cost {
     public double getCalculatedMaterialCosts()
     {
         double value = 0;
-        for(Map.Entry<String,Double> e : materialCosts.entrySet())
+        for(Map.Entry<Material,Integer> e : materialCosts.entrySet())
         {
-            value += e.getValue().doubleValue();
+            value += e.getKey().getMaterialPrice() * e.getValue();
+            System.out.println(e.getKey().getMaterialName());
         }
         return value;
     }
 
 
-    public Map getMaterialCosts(){return materialCosts;}
+    public HashMap<Material,Integer> getMaterialCosts(){return (HashMap)materialCosts;}
+
+    public void setMaterialCosts( Map<Material,Integer> _material)
+        {
+            this.materialCosts = _material;
+        }
 }
 

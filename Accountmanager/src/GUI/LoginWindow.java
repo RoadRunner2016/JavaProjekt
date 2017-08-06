@@ -23,13 +23,26 @@ import org.junit.experimental.theories.FromDataPoints;
 
 import java.sql.SQLException;
 
+import GUI.MainWindow;
+import StorageController.JDBCController;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import GUI.LoginWindow;
+
 /**
  * Created by Ben on 26.04.2017.
  */
 
-public class LoginWindow
-{
+/**mainclass for LoginWindow**/
+public class LoginWindow {
 
+    /**method to open the LoginWindow**/
     public void start(Stage loginScreen)throws Exception
     {
 
@@ -86,36 +99,37 @@ public class LoginWindow
                     {
                         actiontarget.setText("");
 
-                        //usertextfield
-                        //pwbox
-                        String tmpPassword = null;
+                //usertextfield
+                //pwbox
 
-                        JDBCController jdbc = new JDBCController();
-                        actiontarget.setFill(Color.FIREBRICK);
+                String tmpPassword = null;
 
-                        if (jdbc.loadPassword(userTextField.getText(), pwBox.getText())) {
-                            // open the mainwindow
-                            actiontarget.setText("Login erfolgreich!");
-                            loginScreen.close();
-                            MainWindow mw = new MainWindow();
+                JDBCController jdbc = new JDBCController();
 
-                            Stage mainwindow = new Stage();
-                            try {
-                                mw.start(mainwindow);
-                            } catch (Exception ex)
-                            {
-                            }
+                actiontarget.setFill(Color.FIREBRICK);
 
-                        } else
-                        {
+                if (jdbc.loadPassword(userTextField.getText(), pwBox.getText())) {
+                    // open the mainwindow
+                    actiontarget.setText("Login erfolgreich!");
+                    loginScreen.close();
+                    MainWindow mw = new MainWindow();
 
-                            actiontarget.setText("Login fehlgeschlagen");
-                        }
-
-
+                    Stage mainwindow = new Stage();
+                    try {
+                        mw.start(mainwindow);
+                    } catch (Exception ex)
+                    {
+                        ex.printStackTrace();
                     }
 
-                }       );
+                } else {
+
+                    actiontarget.setText("Login fehlgeschlagen");
+                }
+            }
+        });
+
+
 
     }
 }

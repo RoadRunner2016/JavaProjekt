@@ -49,10 +49,7 @@ public class InternalEmp extends Employee {
 
 
     // Getter + Setter
-    /**get first name of an internal employee**/
-    public String getFirstName() { return this.firstName; }
-    /**get last name of an internal employee**/
-    public String getLastName() { return this.lastName; }
+
     /**get email of an internal employee**/
     public String geteMail() {
         return this.eMail;
@@ -151,8 +148,8 @@ public class InternalEmp extends Employee {
     /** add an employee to a specific project **/
     public boolean AddPersonelToProject(ExternalEmp _tmpEmployee, Project _proj)
     {
-        if (this.accessLevel > 2 && _tmpEmployee.getNumberOfProjectsInvolved() < 3 && !_proj.getEmployees().contains(_tmpEmployee)) {
-            if (_proj.getEmployees().add(_tmpEmployee) && _tmpEmployee.projectsInvolved.add(_proj)) {
+        if (this.accessLevel > 2 /*&& _tmpEmployee.getNumberOfProjectsInvolved() < 3 && !_proj.getEmployees().contains(_tmpEmployee)*/) {
+            if (_proj.getEmployees().add(_tmpEmployee) /*&& _tmpEmployee.projectsInvolved.add(_proj)*/) {
                 return true;
             } else {
                 return false;
@@ -247,7 +244,7 @@ public class InternalEmp extends Employee {
      **/
     public void AddMatCosts(String _matName, double _costValue, Project _nameProject) {
         Double d = _costValue;
-        _nameProject.getProjectCosts().getMaterialCosts().put(_matName, _costValue);
+
     }
 
 

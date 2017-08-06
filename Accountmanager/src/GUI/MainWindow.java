@@ -1,13 +1,15 @@
 package GUI;
 
-import StorageController.JDBCController;
+import Project.Project;
 import StorageController.ProjectController;
+import StorageController.JDBCController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+/**mainclass for MainWindow**/
 public class MainWindow extends Application{
 
     public static void main(String[] args){
@@ -15,10 +17,10 @@ public class MainWindow extends Application{
     }
 
 
-
+    /**method to open MainWindow**/
     public void start(Stage stage) throws Exception {
         FXMLLoader	loader	=
-                new	FXMLLoader(getClass().getResource("MainWindow.fxml"));
+                new	FXMLLoader(getClass().getResource("MainWindow2.fxml"));
         Pane root = (Pane) loader.load();
         Scene scene = new Scene(root);
         stage.setScene(scene);

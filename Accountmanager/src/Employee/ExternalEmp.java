@@ -19,13 +19,20 @@ public class ExternalEmp extends Employee
         projectsInvolved = new ArrayList<Project>();
     }
 
-    public ExternalEmp(String _firstName, String _lastName, Double _salary,Integer _projectID)
+    public ExternalEmp(String _firstName, String _lastName, Double _salary,Integer _employeeID)
     {
         firstName = _firstName;
         lastName = _lastName;
         monthlySalary =_salary;
-        projectID = _projectID;
+        empID = _employeeID;
     }
+
+    private String Projekt;
+
+    public void setProjekt(String s){Projekt = s;}
+
+    public String getProject(){return Projekt;}
+
     /**get number of projects the external employee is involved**/
     public int getNumberOfProjectsInvolved()
     {

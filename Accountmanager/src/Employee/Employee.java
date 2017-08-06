@@ -27,6 +27,12 @@ public abstract class Employee
     /**get employee-id**/
     public int getEmpID(){return empID;}
 
+    /**get first name of an internal employee**/
+    public String getFirstName() { return this.firstName; }
+
+    /**get last name of an internal employee**/
+    public String getLastName() { return this.lastName; }
+
     /**get IDCounter**/
     public static final int getIdCounter(){return idCounter;}
 

@@ -7,8 +7,10 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import java.util.Iterator;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by A on 06.02.2017.
@@ -29,7 +31,7 @@ public class InternalTest {
         controller.setAccessLevel(5);
         myDB = new EmpDatabase();
         TestProject = new Project("prj1",2017, 1,1,2017,1,31);
-        // myDB.tmpEdatabase.add(controller);
+       // myDB.tmpEdatabase.add(controller);
     }
 
     @After

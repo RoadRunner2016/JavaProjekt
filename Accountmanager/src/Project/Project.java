@@ -1,11 +1,15 @@
 package Project;
 
 import Employee.Employee;
+
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 
 /**contains information like date, participated employees or milestones of a project**/
 public class Project {
@@ -13,7 +17,6 @@ public class Project {
     //Variables
     private Integer projectID;
     private String projectName;
-    private String projectAdmin;
     private LocalDate start;
     private LocalDate end;
     private List<Employee> employees;
@@ -35,17 +38,6 @@ public class Project {
         projectCosts = new Cost(start, end, employees);
     }
 
-    public Project(String _name, LocalDate _startDate, LocalDate _endDate,String _admin) {
-        projectName = _name;
-        start = _startDate;
-        end = _endDate;
-        projectID = idCounter;
-        idCounter++;
-        employees = new ArrayList<Employee>();
-        milestones = new ArrayList<Milestones>();
-        projectCosts = new Cost(start, end, employees);
-    }
-
     public Project(String _name) {
 
         this(_name, LocalDate.now(), LocalDate.now().plusWeeks(1));
@@ -55,11 +47,22 @@ public class Project {
         this(_name, LocalDate.of(_startYYYY, _startMonth, _startDay), LocalDate.of(_endYYYY, _endMonth, _endDay));
     }
 
-
     //Methods
     /**get enddate of a project**/
     public LocalDate getEndDate() {
         return end;
+    }
+    public String getEndDateString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        return end.format(formatter).toString();
+    }
+    /**get startdate of a project**/
+    public LocalDate getStartDate() {
+        return start;
+    }
+    public String getStartDateString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        return start.format(formatter).toString();
     }
     /**set enddate of a project**/
     public void setEndDate(LocalDate _newDeadLine) {
@@ -98,17 +101,7 @@ public class Project {
     /**get list of milestones of a project**/
     public List<Milestones> getMilestones() { return milestones;}
 
-    public String getEndDateString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        return end.format(formatter).toString();
-    }
-    public String getStartDateString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        return start.format(formatter).toString();
-    }
-
-
-    /** check at the start of the program all milestones of a project for appointments **/
+      /** check at the start of the program all milestones of a project for appointments **/
     public boolean checkAllMilestones()
     {
 

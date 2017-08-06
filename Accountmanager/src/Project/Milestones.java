@@ -45,7 +45,7 @@ public class Milestones {
         return true;
     }
     public boolean setMilestoneInfo(String _MilestoneInfo) {
-        MilestoneName = _MilestoneInfo;
+        MilestoneInfo = _MilestoneInfo;
         return true;
     }
     public boolean setDateOfMilestone(LocalDate _DateOfMilestones) {
