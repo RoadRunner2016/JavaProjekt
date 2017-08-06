@@ -13,6 +13,7 @@ public class Project {
     //Variables
     private Integer projectID;
     private String projectName;
+    private String projectAdmin;
     private LocalDate start;
     private LocalDate end;
     private List<Employee> employees;
@@ -24,6 +25,17 @@ public class Project {
 
     //Constructors
     public Project(String _name, LocalDate _startDate, LocalDate _endDate) {
+        projectName = _name;
+        start = _startDate;
+        end = _endDate;
+        projectID = idCounter;
+        idCounter++;
+        employees = new ArrayList<Employee>();
+        milestones = new ArrayList<Milestones>();
+        projectCosts = new Cost(start, end, employees);
+    }
+
+    public Project(String _name, LocalDate _startDate, LocalDate _endDate,String _admin) {
         projectName = _name;
         start = _startDate;
         end = _endDate;

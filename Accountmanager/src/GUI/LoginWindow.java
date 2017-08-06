@@ -91,7 +91,6 @@ public class LoginWindow
                         String tmpPassword = null;
 
                         JDBCController jdbc = new JDBCController();
-
                         actiontarget.setFill(Color.FIREBRICK);
 
                         if (jdbc.loadPassword(userTextField.getText(), pwBox.getText())) {
@@ -105,7 +104,6 @@ public class LoginWindow
                                 mw.start(mainwindow);
                             } catch (Exception ex)
                             {
-                                ex.printStackTrace();
                             }
 
                         } else
