@@ -2,20 +2,24 @@ package StorageController;
 
 
 import java.sql.*;
+import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Calendar;
-import java.util.Date;
 import java.time.Instant;
-import java.util.List;
+import java.util.*;
+
 import Project.Project;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import Employee.Employee;
-import Project.*;
+import Project.Milestones;
+import Project.Material;
+import Project.Cost;
+
+import static jdk.nashorn.internal.runtime.regexp.joni.Syntax.Java;
 
 
 /**
@@ -119,10 +123,6 @@ public class JDBCController {
 
         return oListProjects;
     }
-
-
-
-    //List Employees für Projekt
     public List<Employee> loadEmployeeForProject(Integer _porjectID) {
 
         List<Employee> tmpListEmployee = null;
@@ -153,7 +153,6 @@ public class JDBCController {
 
         return null;
     }
-    //List Employees ungleich Projekt
     public List<Employee> loadEmployeeNotProject(Integer _porjectID) {
 
         List<Employee> tmpListEmployee = null;
@@ -184,7 +183,6 @@ public class JDBCController {
 
         return null;
     }
-    //List allEmployees
     public List<Employee> loadAllEmployee(Integer _porjectID) {
 
         List<Employee> tmpListEmployee = null;
@@ -215,10 +213,9 @@ public class JDBCController {
 
         return null;
     }
-    //Objekt Liste Milestones Arraylist
-    public List<Milestones> loadAllMilestone() {
+    public ArrayList<Milestones> loadAllMilestone() {
 
-        List<Milestones> tmpListMilestones = null;
+        ArrayList<Milestones> tmpListMilestones = null;
         Milestones tmpMilestone = null;
 
         try {
@@ -248,7 +245,88 @@ public class JDBCController {
 
         return null;
     }
+    public ArrayList<Milestones> loadMilestoneProjects(Integer _projectID) {
 
+        ArrayList<Milestones> tmpListMilestones = null;
+        Milestones tmpMilestone = null;
+
+        try {
+
+            Statement stmt = JdbcStorageController().createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM project_milestone WHERE projectID = '"+_projectID+"'");
+
+            java.sql.Date tmpDate;
+
+
+            while (rs.next())
+            {
+                tmpMilestone.setMilestoneID(rs.getInt("milestoneID"));
+                tmpMilestone.setMilestoneProjectID(rs.getInt("projectID"));
+                tmpDate = (rs.getDate("milestoneDate"));
+                tmpMilestone.setMilestoneInfo(rs.getString("milestoneDescription"));
+                tmpMilestone.setDateOfMilestone(tmpDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                tmpListMilestones.add(tmpMilestone);
+            }
+
+            return tmpListMilestones;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    public ObservableList<Material>loadMaterial()
+    {
+        ObservableList<Material> tmpListMaterial = null;
+        Material tmpMaterial = null;
+
+        try {
+
+            Statement stmt = JdbcStorageController().createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM milestone");
+
+
+            while (rs.next())
+            {
+                tmpMaterial.setMaterialID(rs.getInt("materialID"));
+                tmpMaterial.setMaterialName(rs.getString("materialName"));
+                tmpMaterial.setMaterialPrice(rs.getDouble("materialPrice"));
+            }
+
+            return tmpListMaterial;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+    public Map<String, Integer> mapLoadProjectMaterial(Integer _projectID,ObservableList<Material> _listMaterial)
+    {
+
+        Map<String, Integer> listProjectMaterial = new HashMap<>();
+
+        try
+        {
+
+            Statement stmt = JdbcStorageController().createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT materialName, materialAmount FROM  prg4.project_material pm JOIN prg4.material m ON pm.materialID = m.materialID WHERE projectID = '"+_projectID+"'");
+            while (rs.next()) {
+                listProjectMaterial.put(rs.getString("materialName"), rs.getInt("materialAmount"));
+
+            }
+
+            return listProjectMaterial;
+
+        }
+     catch (SQLException e)
+        {
+        e.printStackTrace();
+        }
+
+        return null;
+    }
 
 
 
@@ -260,16 +338,16 @@ public class JDBCController {
 
 
         DateFormat formatStart = new SimpleDateFormat("yyyy-mm-dd");
-        Date dateStart = formatStart.parse(startDate);
+        java.util.Date dateStart = formatStart.parse(startDate);
 
         DateFormat formatEnd = new SimpleDateFormat("yyyy-mm-dd");
-        Date dateEnd = formatEnd.parse(startDate);
+        java.util.Date dateEnd = formatEnd.parse(startDate);
 
         java.sql.Date sqlDateStart = new java.sql.Date(dateStart.getTime());
         java.sql.Date sqlDateEnd = new java.sql.Date(dateStart.getTime());
 
         Calendar calendar = Calendar.getInstance();
-        Date currentTimestamp = new Timestamp(calendar.getTime().getTime());
+        java.util.Date currentTimestamp = new Timestamp(calendar.getTime().getTime());
 
         try
         {
@@ -286,12 +364,6 @@ public class JDBCController {
         }
         return false;
     }
-
-
-
-
-    // SQL-Insert into
-
     public boolean saveEmployees(String _firstName,String _lastName, Integer _salery, Integer _project ) throws ParseException {
 
         try
@@ -328,7 +400,7 @@ public class JDBCController {
         String milestoneDate = _milestoneYear + "-" + _milestoneMonth + "-" + _milestoneDay;
 
         DateFormat formatStart = new SimpleDateFormat("yyyy-mm-dd");
-        Date dateStart = formatStart.parse(milestoneDate);
+        java.util.Date dateStart = formatStart.parse(milestoneDate);
 
         java.sql.Date sqlMileStone = new java.sql.Date(dateStart.getTime());
 
@@ -351,7 +423,7 @@ public class JDBCController {
         // EINTRAG in der Datenbank noch ändern! TYP!
 
         Calendar calendar = Calendar.getInstance();
-        Date currentTimestamp = new Timestamp(calendar.getTime().getTime());
+        java.util.Date currentTimestamp = new Timestamp(calendar.getTime().getTime());
 
         try
         {
