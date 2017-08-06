@@ -104,7 +104,7 @@ public class JDBCController {
             {
 
                 Date tmpDateStart = rs.getDate("projectStart");
-                Date tmpDateEnd = rs.getDate("projectsEnd");
+                Date tmpDateEnd = rs.getDate("projectEnd");
 
                 LocalDate tmpDBStart = LocalDate.parse(tmpDateStart.toString());
                 LocalDate tmpDBEnd = LocalDate.parse(tmpDateEnd.toString());
@@ -157,4 +157,99 @@ public class JDBCController {
         }
         return false;
     }
+
+
+    public boolean saveEmployees(String _firstName,String _lastName, Integer _salery, Integer _project ) throws ParseException {
+
+        try
+        {
+            Statement stmt = JdbcStorageController().createStatement();
+            String SQL = "INSERT INTO projects (employeeFirstName, employeeLastName, employeeSalery, employeeProject) VALUES ('"+_firstName+"', '"+_lastName+"','"+_salery+"','"+_project+"')";
+            PreparedStatement psEmployee = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            psEmployee.executeUpdate();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public boolean saveMaterial(String _firstName,String _materialName, Integer _materialPrice) throws ParseException {
+
+        try
+        {
+            Statement stmt = JdbcStorageController().createStatement();
+            String SQL = "INSERT INTO projects (materialName, materialPrice) VALUES ('"+_firstName+"', '"+_materialName+"','"+_materialPrice+"')";
+            PreparedStatement psMaterial = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            psMaterial.executeUpdate();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public boolean saveMileStone(Integer _projectID,String _milestoneYear ,String _milestoneMonth, String _milestoneDay, String _milestoneDescription) throws ParseException {
+
+
+        String milestoneDate = _milestoneYear + "-" + _milestoneMonth + "-" + _milestoneDay;
+
+        DateFormat formatStart = new SimpleDateFormat("yyyy-mm-dd");
+        Date dateStart = formatStart.parse(milestoneDate);
+
+        java.sql.Date sqlMileStone = new java.sql.Date(dateStart.getTime());
+
+        try
+        {
+            Statement stmt = JdbcStorageController().createStatement();
+            String SQL = "INSERT INTO projects (projectID, milestoneDate, milestoneDescription) VALUES ('"+ _projectID+"', '"+sqlMileStone+"','"+_milestoneDescription+"')";
+            PreparedStatement psMaterial = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            psMaterial.executeUpdate();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public boolean saveMessage(Integer _projectID,String _messageText, String _messageWriter) throws ParseException {
+
+
+        // EINTRAG in der Datenbank noch ändern! TYP!
+
+        Calendar calendar = Calendar.getInstance();
+        Date currentTimestamp = new Timestamp(calendar.getTime().getTime());
+
+        try
+        {
+            Statement stmt = JdbcStorageController().createStatement();
+            String SQL = "INSERT INTO projects (projectID, milestoneDate, milestoneDescription,) VALUES ('"+ _projectID+"','"+currentTimestamp+"', '"+_messageText+"','"+_messageWriter+"')";
+            PreparedStatement psMessage = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            psMessage.executeUpdate();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public boolean saveProjectMaterial(Integer _projectID, Integer _materialID, Integer _materialAmount) throws ParseException {
+
+
+        try
+        {
+            Statement stmt = JdbcStorageController().createStatement();
+            String SQL = "INSERT INTO projects (projectID, marterialID, materialAmount) VALUES ('"+ _projectID+"','"+_materialID+"', '"+_materialAmount+"')";
+            PreparedStatement psMaterial = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            psMaterial.executeUpdate();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+
 }

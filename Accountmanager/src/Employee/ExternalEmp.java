@@ -12,7 +12,6 @@ import java.util.List;
 public class ExternalEmp extends Employee
 {
     private int numberOfProjectsInvolved;
-    private final int accessLevel;
 
     public ExternalEmp(String _firstName, String _lastName)
     {
@@ -21,7 +20,6 @@ public class ExternalEmp extends Employee
         empID = idCounter;
         idCounter++;
         projectsInvolved = new ArrayList<Project>();
-        accessLevel = 0;
     }
 
     /**get number of projects the external employee is involved**/
@@ -29,10 +27,6 @@ public class ExternalEmp extends Employee
     {
         return projectsInvolved.size();
     }
-
-    /**get the accesslevel of an external employee**/
-    public int getAccessLevel()
-    {return accessLevel;}
 
     /**get list of projects the external employee is involved**/
     public List<Project> getProjectList()
