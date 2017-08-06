@@ -25,7 +25,6 @@ public class IntegrityTest
     Milestones TestMilestone1;
     Milestones TestMilestone2;
 
-
     @Before
 
     public void setUp()

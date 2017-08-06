@@ -19,8 +19,9 @@ public class Main extends Application
 
     public void start(Stage primaryStage) throws Exception
     {
-        MainWindow mainWindow = new MainWindow();
-        mainWindow.start(primaryStage);
+        LoginWindow loginWindow = new LoginWindow();
+
+        loginWindow.start(primaryStage);
 
 
 

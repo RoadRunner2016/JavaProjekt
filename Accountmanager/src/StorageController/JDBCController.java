@@ -1,6 +1,5 @@
 package StorageController;
 
-
 import java.sql.*;
 import java.sql.Date;
 import java.text.DateFormat;
@@ -10,7 +9,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.Instant;
 import java.util.*;
-
 import Project.Project;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,15 +16,15 @@ import Employee.ExternalEmp;
 import Project.Milestones;
 import Project.Material;
 
-import static jdk.nashorn.internal.runtime.regexp.joni.Syntax.Java;
-
 
 /**
  * Created by Ben on 14.05.2017.
  */
 public class JDBCController {
 
-    private static final String PERSONNEL = "prg4.personnel";
+    // prepare Statements
+
+
     public Connection connection;
     public String Select(String _FROM) {
         String preparedStatement = "";
@@ -51,17 +49,17 @@ public class JDBCController {
         return preparedStatement;
     }
     public Connection JdbcStorageController() {
-        try {
+        try
+        {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/prg4", "root", "Blackjack");
-
-
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
         }
 
         return connection;
     }
-
 
     // SQL-Getter
     public boolean loadPassword(String _loginName, String _pw) {
@@ -70,17 +68,24 @@ public class JDBCController {
 
         try {
             Statement stmt = JdbcStorageController().createStatement();
-            ResultSet rs = stmt.executeQuery(this.Select(PERSONNEL,"personnelLoginName",_loginName));
-            if(rs.next()) {
-                if(rs.getString("personnelPassword").equals(_pw)) {
+            ResultSet rs = stmt.executeQuery(this.Select("prg4.personnel","personnelLoginName",_loginName));
+            if(rs.next())
+            {
+                if(rs.getString("personnelPassword").equals(_pw))
+                {
+                    stmt.close();
                     return true;
                 }
 
             }
 
+
+
+            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
 
 
         return false;
@@ -109,6 +114,8 @@ public class JDBCController {
                 oListProjects.addAll(tmpProject);
             }
 
+            stmt.close();;
+            rs.close();
             return oListProjects;
 
         } catch (SQLException e) {
@@ -131,6 +138,8 @@ public class JDBCController {
                 tmpListEmployee.add(new ExternalEmp(rs.getString("employeeFirstName"),rs.getString("employeeLastName"),rs.getDouble("employeeSalery"),rs.getInt("employeeProject")));
             }
 
+            stmt.close();;
+            rs.close();
             return tmpListEmployee ;
 
         } catch (SQLException e) {
@@ -153,6 +162,8 @@ public class JDBCController {
                 tmpListEmployee.add(new ExternalEmp(rs.getString("employeeFirstName"),rs.getString("employeeLastName"),rs.getDouble("employeeSalery"),rs.getInt("employeeProject")));
             }
 
+            stmt.close();;
+            rs.close();
             return tmpListEmployee ;
 
         } catch (SQLException e) {
@@ -168,14 +179,18 @@ public class JDBCController {
 
             Statement stmt = JdbcStorageController().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM employee");
-            while (rs.next()) {
+            while (rs.next())
+            {
                 tmpListEmployee.add(new ExternalEmp(rs.getString("employeeFirstName"), rs.getString("employeeLastName"), rs.getDouble("employeeSalery"), rs.getInt("employeeProject")));
 
-                return tmpListEmployee;
             }
+            stmt.close();;
+            rs.close();
+            return tmpListEmployee;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return null;
     }
     public ArrayList<Milestones> loadAllMilestone() {
@@ -196,6 +211,8 @@ public class JDBCController {
                 tmpListMilestones.add(new Milestones(rs.getInt("milestoneID"),rs.getString("milestoneName"),rs.getString("milestoneDescription"),rs.getDate("milestoneDate").toInstant().atZone(ZoneId.systemDefault()).toLocalDate()));
             }
 
+            stmt.close();;
+            rs.close();
             return tmpListMilestones;
 
         } catch (SQLException e) {
@@ -221,8 +238,8 @@ public class JDBCController {
             {
                 tmpListMilestones.add(new Milestones(rs.getInt("milestoneID"),rs.getString("milestoneName"),rs.getString("milestoneDescription"),rs.getDate("milestoneDate").toInstant().atZone(ZoneId.systemDefault()).toLocalDate()));
             }
-
-
+            stmt.close();;
+            rs.close();
             return tmpListMilestones;
 
         } catch (SQLException e) {
@@ -248,7 +265,8 @@ public class JDBCController {
                 tmpMaterial.setMaterialName(rs.getString("materialName"));
                 tmpMaterial.setMaterialPrice(rs.getDouble("materialPrice"));
             }
-
+            stmt.close();;
+            rs.close();
             return tmpListMaterial;
 
         } catch (SQLException e) {
@@ -271,7 +289,8 @@ public class JDBCController {
                 listProjectMaterial.put(rs.getString("materialName"), rs.getInt("materialAmount"));
 
             }
-
+            stmt.close();;
+            rs.close();
             return listProjectMaterial;
 
         }
@@ -283,14 +302,11 @@ public class JDBCController {
         return null;
     }
 
-
-
     // SQL-Setter
     public boolean saveProjects(String _name,Integer _dayStart,Integer _monthStart,Integer _yearStart,Integer _dayEnd,Integer _monthEnd,Integer _yearEnd,String _admin ) throws ParseException {
 
         String startDate = _yearStart + "-" + _monthStart + "-" + _dayStart;
         String endDate = _yearEnd + "-" + _monthEnd + "-" + _dayEnd;
-
 
         DateFormat formatStart = new SimpleDateFormat("yyyy-mm-dd");
         java.util.Date dateStart = formatStart.parse(startDate);
@@ -312,6 +328,8 @@ public class JDBCController {
             PreparedStatement psProjects = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             psProjects.executeUpdate();
 
+            psProjects.close();
+            stmt.close();;
             return true;
 
         } catch (SQLException e) {
@@ -327,6 +345,8 @@ public class JDBCController {
             String SQL = "INSERT INTO projects (employeeFirstName, employeeLastName, employeeSalery, employeeProject) VALUES ('"+_firstName+"', '"+_lastName+"','"+_salery+"','"+_project+"')";
             PreparedStatement psEmployee = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             psEmployee.executeUpdate();
+            psEmployee.close();
+            stmt.close();;
             return true;
 
         } catch (SQLException e) {
@@ -342,6 +362,8 @@ public class JDBCController {
             String SQL = "INSERT INTO projects (materialName, materialPrice) VALUES ('"+_firstName+"', '"+_materialName+"','"+_materialPrice+"')";
             PreparedStatement psMaterial = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             psMaterial.executeUpdate();
+            psMaterial.close();
+            stmt.close();;
             return true;
 
         } catch (SQLException e) {
@@ -365,6 +387,8 @@ public class JDBCController {
             String SQL = "INSERT INTO projects (projectID, milestoneDate, milestoneDescription) VALUES ('"+ _projectID+"', '"+sqlMileStone+"','"+_milestoneDescription+"')";
             PreparedStatement psMaterial = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             psMaterial.executeUpdate();
+            psMaterial.close();
+            stmt.close();;
             return true;
 
         } catch (SQLException e) {
@@ -386,6 +410,9 @@ public class JDBCController {
             String SQL = "INSERT INTO projects (projectID, milestoneDate, milestoneDescription,) VALUES ('"+ _projectID+"','"+currentTimestamp+"', '"+_messageText+"','"+_messageWriter+"')";
             PreparedStatement psMessage = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             psMessage.executeUpdate();
+
+            psMessage.close();
+            stmt.close();;
             return true;
 
         } catch (SQLException e) {
@@ -438,6 +465,8 @@ public class JDBCController {
             psDelete = connection.prepareStatement(deleteProject);
             psDelete.executeUpdate();
 
+            psDelete.close();
+            stmt.close();;
             return true;
 
         } catch (SQLException e) {
@@ -457,6 +486,8 @@ public class JDBCController {
 
             PreparedStatement psDeleteEmployee = connection.prepareStatement(deleteEmployee);
             psDeleteEmployee.executeUpdate();
+            psDeleteEmployee.close();
+            stmt.close();;
             return true;
 
         } catch (SQLException e) {
@@ -472,6 +503,8 @@ public class JDBCController {
             String deleteImgages = "DELETE FROM images " + "WHERE imagesID = '"+_imagesID+"'";
             PreparedStatement psDeleteImages = connection.prepareStatement(deleteImgages);
             psDeleteImages.executeUpdate();
+            psDeleteImages.close();
+            stmt.close();;
             return true;
 
         } catch (SQLException e) {
@@ -487,6 +520,44 @@ public class JDBCController {
             String deleteMilestone = "DELETE FROM milestone " + "WHERE milestoneID = '"+_milestoneID+"'";
             PreparedStatement psDeleteMilestone = connection.prepareStatement(deleteMilestone);
             psDeleteMilestone.executeUpdate();
+            psDeleteMilestone.close();
+            stmt.close();;
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // SQL Updater
+
+    public boolean updateProjects(Integer _projectID, String _name,Integer _dayStart,Integer _monthStart,Integer _yearStart,Integer _dayEnd,Integer _monthEnd,Integer _yearEnd,String _admin ) throws ParseException {
+
+        String startDate = _yearStart + "-" + _monthStart + "-" + _dayStart;
+        String endDate = _yearEnd + "-" + _monthEnd + "-" + _dayEnd;
+
+        DateFormat formatStart = new SimpleDateFormat("yyyy-mm-dd");
+        java.util.Date dateStart = formatStart.parse(startDate);
+
+        DateFormat formatEnd = new SimpleDateFormat("yyyy-mm-dd");
+        java.util.Date dateEnd = formatEnd.parse(startDate);
+
+        Calendar calendar = Calendar.getInstance();
+        java.util.Date currentTimestamp = new Timestamp(calendar.getTime().getTime());
+
+        //"UPDATE Student set name=?, salary=?, designation=? where id=?"
+
+        try
+        {
+            Statement stmt = JdbcStorageController().createStatement();
+
+            String SQL = "UPDATE projects SET projectName ="+_name+", projectStart="+startDate+", projectEnd="+endDate+",projectTimeStamp="+currentTimestamp+",projectAdmin= "+_admin+"";
+            PreparedStatement psProjects = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            psProjects.executeUpdate();
+
+            stmt.close();;
+            psProjects.close();
             return true;
 
         } catch (SQLException e) {
