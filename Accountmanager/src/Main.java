@@ -19,11 +19,10 @@ public class Main extends Application
 
     public void start(Stage primaryStage) throws Exception
     {
-        LoginWindow loginWindow = new LoginWindow();
 
-        loginWindow.start(primaryStage);
+        JDBCController controller = new JDBCController();
 
-
+        controller.updateProjects(1,"ZumKotzen",12,2,2330,23,1,3000,"Kalle");
 
     }
 }
